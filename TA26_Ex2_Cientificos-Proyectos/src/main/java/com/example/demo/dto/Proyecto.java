@@ -2,8 +2,10 @@ package com.example.demo.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,7 +16,7 @@ import jakarta.persistence.JoinColumn;
 
 
 @Entity
-@Table(name="proyecto")
+@Table(name="proyectos")
 public class Proyecto {
 
 	@Id
@@ -25,14 +27,16 @@ public class Proyecto {
 	@Column(name = "horas")
 	private Integer horas;
 	
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
         name = "asignado_a",
         joinColumns = @JoinColumn(name = "proyecto_id"),
         inverseJoinColumns = @JoinColumn(name = "cientifico_dni")
     )
-	private List<Cientifico> cientificos;
-
+	
+	@JsonIgnoreProperties("proyectos")
+    private List<Cientifico> cientificos;
+    
 
 	public Proyecto() {
 
